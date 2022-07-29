@@ -9,3 +9,8 @@ go-zero 文档：https://go-zero.dev/cn/
 ```text
 go run .\core\core.go -f .\core\etc\core-api.yaml
 ```
+
+使用 api 文件生成接口代码
+```text
+goctl api go -api core.api -dir . -style go_zero
+```
