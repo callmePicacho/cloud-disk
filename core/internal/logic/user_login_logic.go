@@ -13,21 +13,21 @@ import (
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
-type UserLogic struct {
+type UserLoginLogic struct {
 	logx.Logger
 	ctx    context.Context
 	svcCtx *svc.ServiceContext
 }
 
-func NewUserLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UserLogic {
-	return &UserLogic{
+func NewUserLoginLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UserLoginLogic {
+	return &UserLoginLogic{
 		Logger: logx.WithContext(ctx),
 		ctx:    ctx,
 		svcCtx: svcCtx,
 	}
 }
 
-func (l *UserLogic) User(req *types.LoginRequest) (resp *types.LoginReply, err error) {
+func (l *UserLoginLogic) UserLogin(req *types.LoginRequest) (resp *types.LoginReply, err error) {
 	// 1. 从数据库查询当前用户
 	user := new(models.UserBasic)
 	err = models.Engine.Where("name = ?", req.Name).First(user).Error
@@ -45,5 +45,7 @@ func (l *UserLogic) User(req *types.LoginRequest) (resp *types.LoginReply, err e
 	if err != nil {
 		return nil, err
 	}
-	return &types.LoginReply{Token: token}, nil
+	resp = new(types.LoginReply)
+	resp.Token = token
+	return
 }
