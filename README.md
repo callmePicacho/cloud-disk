@@ -7,7 +7,7 @@ go-zero 文档：https://go-zero.dev/cn/
 
 启动服务
 ```text
-go run .\core\core.go -f .\core\etc\core-api.yaml
+go run .\core.go -f .\etc\core-api.yaml
 ```
 
 使用 api 文件生成接口代码

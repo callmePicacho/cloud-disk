@@ -1,12 +1,14 @@
 package models
 
 import (
+	"github.com/go-redis/redis/v8"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"log"
 )
 
 var Engine = InitDB()
+var RDB = InitRDB()
 
 // InitDB 初始化 MySQL
 func InitDB() *gorm.DB {
@@ -17,4 +19,13 @@ func InitDB() *gorm.DB {
 		return nil
 	}
 	return db
+}
+
+// InitRDB 初始化 Redis
+func InitRDB() *redis.Client {
+	return redis.NewClient(&redis.Options{
+		Addr:     "localhost:6379",
+		Password: "", // no password set
+		DB:       1,  // use default DB
+	})
 }
