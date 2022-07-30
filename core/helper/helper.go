@@ -5,6 +5,7 @@ import (
 	"context"
 	"crypto/md5"
 	"crypto/tls"
+	"errors"
 	"fmt"
 	"github.com/golang-jwt/jwt/v4"
 	"github.com/jordan-wright/email"
@@ -43,6 +44,21 @@ func GenerateToken(id uint, identity, name string) (string, error) {
 		return "", err
 	}
 	return signedString, nil
+}
+
+// AnalyzeToken Token 解析
+func AnalyzeToken(token string) (uc *define.UserClaim, err error) {
+	uc = new(define.UserClaim)
+	claims, err := jwt.ParseWithClaims(token, uc, func(token *jwt.Token) (interface{}, error) {
+		return []byte(define.JwtKey), nil
+	})
+	if err != nil {
+		return
+	}
+	if !claims.Valid {
+		return uc, errors.New("token is invalid")
+	}
+	return uc, err
 }
 
 // MailSendCode 邮箱验证码发送

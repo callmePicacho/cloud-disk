@@ -35,5 +35,5 @@ func (l *FileUploadLogic) FileUpload(req *types.FileUploadRequest) (resp *types.
 		Path:     req.Path,
 	}
 	err = l.svcCtx.Engine.Create(rp).Error
-	return &types.FileUploadReply{Identity: rp.Identity}, err
+	return &types.FileUploadReply{Identity: rp.Identity, Ext: rp.Ext, Name: rp.Name}, err
 }
