@@ -3,11 +3,11 @@ package models
 import "gorm.io/gorm"
 
 type UserBasic struct {
+	gorm.Model
 	Identity string
 	Name     string
 	Password string
 	Email    string
-	gorm.Model
 }
 
 func (table UserBasic) TableName() string {
