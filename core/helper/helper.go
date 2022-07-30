@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"github.com/golang-jwt/jwt/v4"
 	"github.com/jordan-wright/email"
+	uuid "github.com/satori/go.uuid"
 	"math/rand"
 	"net/smtp"
 	"time"
@@ -58,4 +59,9 @@ func GenerateVerifyCode() (code string) {
 		code += string(s[rand.Intn(len(s))])
 	}
 	return
+}
+
+// GenerateUUID 生成UUID
+func GenerateUUID() string {
+	return uuid.NewV4().String()
 }

@@ -36,7 +36,7 @@ func (l *MailCodeSendRegisterLogic) MailCodeSendRegister(req *types.MailCodeSend
 	if result.Error != err && !errors.Is(result.Error, gorm.ErrRecordNotFound) {
 		return nil, err
 	}
-	if result.RowsAffected != 0 {
+	if result.RowsAffected > 0 {
 		return nil, errors.New("该邮箱已被注册")
 	}
 	// 获取验证码
