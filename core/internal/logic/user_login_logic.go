@@ -30,7 +30,7 @@ func NewUserLoginLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UserLog
 func (l *UserLoginLogic) UserLogin(req *types.LoginRequest) (resp *types.LoginReply, err error) {
 	// 1. 从数据库查询当前用户
 	user := new(models.UserBasic)
-	err = models.Engine.Where("name = ?", req.Name).First(user).Error
+	err = l.svcCtx.Engine.Where("name = ?", req.Name).First(user).Error
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return nil, errors.New("用户名不存在")

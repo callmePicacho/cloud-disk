@@ -28,7 +28,7 @@ func NewUserDetailLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UserDe
 
 func (l *UserDetailLogic) UserDetail(req *types.UserDetailRequest) (resp *types.UserDetailReply, err error) {
 	user := new(models.UserBasic)
-	err = models.Engine.Select("name, email").Where("identity = ?", req.Identity).First(&user).Error
+	err = l.svcCtx.Engine.Select("name, email").Where("identity = ?", req.Identity).First(&user).Error
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return nil, errors.New("用户不存在")
