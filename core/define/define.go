@@ -29,3 +29,6 @@ var TencentSecretID = os.Getenv("TencentSecretID")
 
 // TencentCosBucket 桶名称
 var TencentCosBucket = "https://cloud-disk-1259459460.cos.ap-guangzhou.myqcloud.com"
+
+// PageSize 分页的默认参数
+var PageSize = 20

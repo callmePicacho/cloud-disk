@@ -59,3 +59,24 @@ type UserRepositorySaveRequest struct {
 
 type UserRepositorySaveReply struct {
 }
+
+type UserFileListRequest struct {
+	Id   int64 `json:"id,optional"` // 文件层级，等同于 parent_id
+	Page int   `json:"page,optional"`
+	Size int   `json:"size,optional"`
+}
+
+type UserFileListReply struct {
+	List  []*UserFile `json:"list"`
+	Count int64       `json:"count"`
+}
+
+type UserFile struct {
+	Id                 int64  `json:"id"`
+	Identity           string `json:"identity"`           // 文件记录在个人存储池的唯一标识
+	RepositoryIdentity string `json:"repositoryIdentity"` // 文件记录在公共资源池的唯一标识
+	Name               string `json:"name"`
+	Ext                string `json:"ext"`
+	Path               string `json:"path"`
+	Size               int64  `json:"size"`
+}
