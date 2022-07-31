@@ -24,12 +24,12 @@ func NewUserRepositorySaveLogic(ctx context.Context, svcCtx *svc.ServiceContext)
 	}
 }
 
-func (l *UserRepositorySaveLogic) UserRepositorySave(req *types.UserRepositorySaveRequest, UserIdentity string) (resp *types.UserRepositorySaveReply, err error) {
-	// 先找数据库中是否已存在 UserIdentity - parentId - name 相等的记录，如果已有，更新 RepositoryIdentity，否则插入记录
-	err = l.svcCtx.Engine.Where("parent_id = ? AND user_identity = ? AND name = ? AND ext = ?", req.ParentId, UserIdentity, req.Name, req.Ext).
+func (l *UserRepositorySaveLogic) UserRepositorySave(req *types.UserRepositorySaveRequest, userIdentity string) (resp *types.UserRepositorySaveReply, err error) {
+	// 先找数据库中是否已存在 userIdentity - parentId - name 相等的记录，如果已有，更新 RepositoryIdentity，否则插入记录
+	err = l.svcCtx.Engine.Where("parent_id = ? AND user_identity = ? AND name = ? AND ext = ?", req.ParentId, userIdentity, req.Name, req.Ext).
 		Assign(&models.UserRepository{
 			Identity:           helper.GenerateUUID(),
-			UserIdentity:       UserIdentity,
+			UserIdentity:       userIdentity,
 			ParentId:           req.ParentId,
 			RepositoryIdentity: req.RepositoryIdentity,
 			Ext:                req.Ext,
