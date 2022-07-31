@@ -25,13 +25,13 @@ func Md5(s string) string {
 }
 
 // GenerateToken 生成 Token
-func GenerateToken(id uint, identity, name string) (string, error) {
+func GenerateToken(id uint, identity, name string, second int) (string, error) {
 	uc := define.UserClaim{
 		Id:       id,
 		Identity: identity,
 		Name:     name,
 		RegisteredClaims: jwt.RegisteredClaims{
-			ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Hour * 24 * 7)), // 默认七天过期时间
+			ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Duration(second) * time.Second)),
 		},
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, uc)

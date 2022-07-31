@@ -14,6 +14,11 @@ type UserClaim struct {
 
 var JwtKey = "cloud-disk-key"
 
+// TokenExpire token 过期时间，单位 s
+var TokenExpire = 60 * 60 * 24 // 24h
+// RefreshTokenExpire refresh token 过期时间，单位 s
+var RefreshTokenExpire = 60 * 60 * 24 * 30 // 30day
+
 var PasswordSalt = "cloud-disk-lyy"
 
 // MailPassword 从环境变量中读取的 email 密码

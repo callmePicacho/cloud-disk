@@ -27,7 +27,7 @@ func (m *AuthMiddleware) Handle(next http.HandlerFunc) http.HandlerFunc {
 		uc, err := helper.AnalyzeToken(auth)
 		if err != nil {
 			w.WriteHeader(http.StatusUnauthorized)
-			w.Write([]byte("Unauthorized"))
+			w.Write([]byte(err.Error()))
 			return
 		}
 		r.Header.Set("UserId", strconv.Itoa(int(uc.Id)))
