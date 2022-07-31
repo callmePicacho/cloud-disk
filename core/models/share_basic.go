@@ -4,11 +4,11 @@ import "gorm.io/gorm"
 
 type ShareBasic struct {
 	gorm.Model
-	Identity           string
-	UserIdentity       string // 用户标识
-	RepositoryIdentity string // 中心资源池资源标识
-	ExpiredTime        int
-	ClickNum           int
+	Identity               string
+	UserIdentity           string // 用户标识
+	UserRepositoryIdentity string // 用户资源池资源唯一标识
+	ExpiredTime            int
+	ClickNum               int
 }
 
 func (table ShareBasic) TableName() string {

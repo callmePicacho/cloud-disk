@@ -27,10 +27,10 @@ func NewShareBasicCreateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *
 
 func (l *ShareBasicCreateLogic) ShareBasicCreate(req *types.ShareBasicCreateRequest, userIdentity string) (resp *types.ShareBasicCreateReply, err error) {
 	data := &models.ShareBasic{
-		Identity:           helper.GenerateUUID(),
-		UserIdentity:       userIdentity,
-		RepositoryIdentity: req.RepositoryIdentity,
-		ExpiredTime:        req.ExpiredTime,
+		Identity:               helper.GenerateUUID(),
+		UserIdentity:           userIdentity,
+		UserRepositoryIdentity: req.UserRepositoryIdentity,
+		ExpiredTime:            req.ExpiredTime,
 	}
 	err = l.svcCtx.Engine.Create(data).Error
 	return &types.ShareBasicCreateReply{Identity: data.Identity}, err

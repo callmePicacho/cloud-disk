@@ -2,8 +2,8 @@
 package types
 
 type ShareBasicCreateRequest struct {
-	RepositoryIdentity string `json:"repositoryIdentity"`
-	ExpiredTime        int    `json:"expiredTime"`
+	UserRepositoryIdentity string `json:"userRepositoryIdentity"` // 用户池中唯一的标识
+	ExpiredTime            int    `json:"expiredTime"`
 }
 
 type ShareBasicCreateReply struct {
