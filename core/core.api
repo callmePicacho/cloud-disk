@@ -39,6 +39,10 @@ service core-api {
 	// 文件夹创建
 	@handler UserFolderCreate
 	post /user/folder/create (UserFolderCreateRequest) returns (UserFolderCreateReply)
+	
+	// 文件删除
+	@handler UserFileDelete
+	delete /user/file/delete (UserFileDeleteRequest) returns (UserFileDeleteReply)
 }
 
 type LoginRequest {
@@ -137,3 +141,9 @@ type UserFolderCreateRequest {
 type UserFolderCreateReply {
 	Identity string `json:"identity"`
 }
+
+type UserFileDeleteRequest {
+	Identity string `json:"identity"`
+}
+
+type UserFileDeleteReply {}

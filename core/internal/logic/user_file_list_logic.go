@@ -42,7 +42,7 @@ func (l *UserFileListLogic) UserFileList(req *types.UserFileListRequest, userIde
 	err = l.svcCtx.Engine.Table("user_repository u").
 		Joins("LEFT JOIN repository_pool p on u.repository_identity = p.identity").
 		Select("u.id, u.identity, u.repository_identity, u.name, u.ext, p.path, p.size").
-		Where("parent_id = ? AND user_identity = ?", req.Id, userIdentity).
+		Where("parent_id = ? AND user_identity = ? and u.deleted_at is null", req.Id, userIdentity).
 		Limit(size).
 		Offset(offset).
 		Find(&userList).Error
@@ -51,7 +51,7 @@ func (l *UserFileListLogic) UserFileList(req *types.UserFileListRequest, userIde
 	}
 	var cnt int64
 	err = l.svcCtx.Engine.Table("user_repository u").
-		Where("parent_id = ? AND user_identity = ?", req.Id, userIdentity).
+		Where("parent_id = ? AND user_identity = ? and u.deleted_at is null", req.Id, userIdentity).
 		Count(&cnt).Error
 	return &types.UserFileListReply{List: userList, Count: cnt}, err
 }
