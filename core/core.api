@@ -35,6 +35,10 @@ service core-api {
 	// 文件名称修改
 	@handler UserFileNameUpdate
 	post /user/file/name/update (UserFileNameUpdateRequest) returns (UserFileNameUpdateReply)
+	
+	// 文件夹创建
+	@handler UserFolderCreate
+	post /user/folder/create (UserFolderCreateRequest) returns (UserFolderCreateReply)
 }
 
 type LoginRequest {
@@ -124,3 +128,12 @@ type UserFileNameUpdateRequest {
 }
 
 type UserFileNameUpdateReply {}
+
+type UserFolderCreateRequest {
+	ParentId int64  `json:"parentId"`
+	Name     string `json:"name"`
+}
+
+type UserFolderCreateReply {
+	Identity string `json:"identity"`
+}

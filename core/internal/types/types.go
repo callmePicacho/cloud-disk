@@ -88,3 +88,12 @@ type UserFileNameUpdateRequest struct {
 
 type UserFileNameUpdateReply struct {
 }
+
+type UserFolderCreateRequest struct {
+	ParentId int64  `json:"parentId"`
+	Name     string `json:"name"`
+}
+
+type UserFolderCreateReply struct {
+	Identity string `json:"identity"`
+}
