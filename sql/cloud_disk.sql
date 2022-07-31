@@ -21,7 +21,6 @@ create table if not exists share_basic
 	identity varchar(36) null,
 	user_identity varchar(36) null comment '对应用户的唯一标识',
 	repository_identity varchar(36) null comment '公共池中文件的唯一标识',
-	user_repository_identity varchar(36) null comment '用户池子中的唯一标识',
 	expired_time int null comment '失效时间，单位秒,【0-永不失效】',
 	click_num int default 0 null comment '点击次数',
 	created_at datetime null,
