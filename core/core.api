@@ -14,6 +14,10 @@ service core-api {
 	// 用户注册
 	@handler UserRegister
 	post /user/register (UserRegisterRequest) returns (UserRegisterReply)
+	
+	// 根据分享记录获取资源详情
+	@handler ShareBasicDetail
+	get /share/basic/detail (ShareBasicDetailRequest) returns (ShareBasicDetailReply)
 }
 
 @server (
@@ -51,6 +55,18 @@ service core-api {
 	// 创建分享记录
 	@handler ShareBasicCreate
 	post /share/basic/create (ShareBasicCreateRequest) returns (ShareBasicCreateReply)
+}
+
+type ShareBasicDetailRequest {
+	Identity string `json:"identity"` // share_basic 的 identity
+}
+
+type ShareBasicDetailReply {
+	RepositoryIdentity string `json:"repositoryIdentity"` // 公共池中文件的唯一标识
+	Name               string `json:"name"`               // 用户资源池中的名称
+	Ext                string `json:"ext"`
+	Size               int64  `json:"size"`
+	Path               string `json:"path"`
 }
 
 type ShareBasicCreateRequest {
