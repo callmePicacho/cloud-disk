@@ -19,13 +19,9 @@ import (
 	"time"
 )
 
-const (
-	Salt = "lyyyyy"
-)
-
 // Md5 加盐加密
 func Md5(s string) string {
-	return fmt.Sprintf("%x", md5.Sum([]byte(s+Salt)))
+	return fmt.Sprintf("%x", md5.Sum([]byte(s+define.PasswordSalt)))
 }
 
 // GenerateToken 生成 Token

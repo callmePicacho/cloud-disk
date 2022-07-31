@@ -14,6 +14,8 @@ type UserClaim struct {
 
 var JwtKey = "cloud-disk-key"
 
+var PasswordSalt = "cloud-disk-lyy"
+
 // MailPassword 从环境变量中读取的 email 密码
 var MailPassword = os.Getenv("MailPassword")
 

@@ -28,7 +28,7 @@ func NewShareBasicCreateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *
 func (l *ShareBasicCreateLogic) ShareBasicCreate(req *types.ShareBasicCreateRequest, userIdentity string) (resp *types.ShareBasicCreateReply, err error) {
 	// 查询分享文件是否存在
 	ur := new(models.UserRepository)
-	err = l.svcCtx.Engine.Where("identity = ?", req.UserRepositoryIdentity).First(ur).Error
+	err = l.svcCtx.Engine.Where("identity = ? and user_identity = ?", req.UserRepositoryIdentity, userIdentity).First(ur).Error
 	if err != nil {
 		return
 	}
