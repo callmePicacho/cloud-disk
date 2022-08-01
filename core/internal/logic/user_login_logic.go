@@ -42,7 +42,7 @@ func (l *UserLoginLogic) UserLogin(req *types.LoginRequest) (resp *types.LoginRe
 		return nil, errors.New("密码错误")
 	}
 	// 2. 生成 token
-	token, err := helper.GenerateToken(user.ID, user.Identity, user.Name, 10)
+	token, err := helper.GenerateToken(user.ID, user.Identity, user.Name, define.TokenExpire)
 	if err != nil {
 		return nil, err
 	}
