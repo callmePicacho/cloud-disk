@@ -64,9 +64,47 @@ service core-api {
 	@handler RefreshAuthorization
 	post /refresh/authorization (RefreshAuthorizationRequest) returns (RefreshAuthorizationReply)
 	
-	// 文件上传前基本信息
+	// 文件上传前基本信息处理
 	@handler FileUploadPrepare
 	post /file/upload/prepare (FileUploadPrepareRequest) returns (FileUploadPrepareReply)
+	
+	// 文件分片上传
+	@handler FileUploadChunk
+	post /file/upload/chunk (FileUploadChunkRequest) returns (FileUploadChunkReply)
+	
+	// 文件分片上传完成
+	@handler FileUploadChunkComplete
+	post /file/upload/chunk/complete (FileUploadChunkCompleteRequest) returns (FileUploadChunkCompleteReply)
+}
+
+type FileUploadChunkCompleteRequest {
+	Md5        string      `json:"md5"`
+	Name       string      `json:"name"`
+	Ext        string      `json:"ext"`
+	Size       int64       `json:"size"`
+	Key        string      `json:"key"`
+	UploadId   string      `json:"uploadId"`
+	CosObjects []CosObject `json:"cosObjects"` // 上传文件的编号和对应Md5值数组
+}
+
+type CosObject {
+	PartNumber int    `json:"partNumber"`
+	Etag       string `json:"etag"`
+}
+
+type FileUploadChunkCompleteReply {
+	Identity string `json:"identity"` // 中心存储池identity
+}
+
+type FileUploadChunkRequest { // formdata
+	// file
+	// key
+	// uploadId
+	// partNumber 分片文件编号
+}
+
+type FileUploadChunkReply {
+	Etag string `json:"etag"` // MD5
 }
 
 type FileUploadPrepareRequest {

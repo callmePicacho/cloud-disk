@@ -85,3 +85,12 @@ func TestCheckFile(t *testing.T) {
 	fmt.Println(hash2)
 	fmt.Println(hash1 == hash2)
 }
+
+// 打印文件的 md5 值
+func TestFileMd5(t *testing.T) {
+	b, err := os.ReadFile("2222.png")
+	if err != nil {
+		t.Fatal(t)
+	}
+	fmt.Println(fmt.Sprintf("%x", md5.Sum(b)))
+}

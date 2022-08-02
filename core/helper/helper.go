@@ -1,6 +1,7 @@
 package helper
 
 import (
+	"bytes"
 	"cloud-disk/core/define"
 	"context"
 	"crypto/md5"
@@ -11,11 +12,14 @@ import (
 	"github.com/jordan-wright/email"
 	uuid "github.com/satori/go.uuid"
 	"github.com/tencentyun/cos-go-sdk-v5"
+	"io"
 	"math/rand"
 	"net/http"
 	"net/smtp"
 	"net/url"
 	"path"
+	"strconv"
+	"strings"
 	"time"
 )
 
@@ -83,8 +87,7 @@ func GenerateUUID() string {
 	return uuid.NewV4().String()
 }
 
-// CosUpload 上传文件到腾讯云
-func CosUpload(r *http.Request) (string, error) {
+func NewCosClient() *cos.Client {
 	u, _ := url.Parse(define.TencentCosBucket)
 	b := &cos.BaseURL{BucketURL: u}
 	client := cos.NewClient(b, &http.Client{
@@ -93,6 +96,12 @@ func CosUpload(r *http.Request) (string, error) {
 			SecretKey: define.TencentSecretKey,
 		},
 	})
+	return client
+}
+
+// CosUpload 上传文件到腾讯云
+func CosUpload(r *http.Request) (string, error) {
+	client := NewCosClient()
 
 	file, fileHeader, err := r.FormFile("file")
 	if err != nil {
@@ -104,4 +113,49 @@ func CosUpload(r *http.Request) (string, error) {
 		context.Background(), key, file, nil,
 	)
 	return define.TencentCosBucket + "/" + key, err
+}
+
+// CosInitPart 分片上传初始化
+func CosInitPart(ext string) (key, uploadId string, err error) {
+	client := NewCosClient()
+
+	key = GenerateUUID() + ext
+	v, _, err := client.Object.InitiateMultipartUpload(
+		context.Background(), key, nil)
+	return key, v.UploadID, err
+}
+
+// CosPartUpload 分片上传
+func CosPartUpload(r *http.Request) (eTag string, err error) {
+	client := NewCosClient()
+
+	key := r.PostForm.Get("key")
+	uploadId := r.PostForm.Get("uploadId")
+	partNumber, err := strconv.Atoi(r.PostForm.Get("partNumber"))
+	if err != nil {
+		return
+	}
+	f, _, err := r.FormFile("file")
+	if err != nil {
+		return
+	}
+	buf := bytes.NewBuffer(nil)
+	io.Copy(buf, f)
+
+	resp, err := client.Object.UploadPart(
+		context.Background(), key, uploadId, partNumber, bytes.NewReader(buf.Bytes()), nil,
+	)
+	return strings.Trim(resp.Header.Get("ETag"), "\""), err
+}
+
+// CosPartUploadComplete 分片上传完成
+func CosPartUploadComplete(key, uploadId string, co []cos.Object) (err error) {
+	client := NewCosClient()
+
+	opt := &cos.CompleteMultipartUploadOptions{}
+	opt.Parts = append(opt.Parts, co...)
+	_, _, err = client.Object.CompleteMultipartUpload(
+		context.Background(), key, uploadId, opt,
+	)
+	return
 }
